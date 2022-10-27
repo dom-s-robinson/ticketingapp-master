@@ -27,6 +27,8 @@
             :key="index"
           >
             <p class="text-gray-800">{{ item.text }}</p>
+            <XMarkIcon class="fill-red-500 w-8 h-8" @click="remove(item.id)"
+            />
           </li>
         </VueDraggableNext>
 
@@ -55,6 +57,7 @@ import { VueDraggableNext } from "vue-draggable-next"
 import { useKanbanSortStore } from "../../stores/kanbansort"
 import { storeToRefs } from "pinia"
 import { api } from "../../assets/api"
+import { XMarkIcon } from "@heroicons/vue/24/solid"
 
 const store = useKanbanSortStore()
 
