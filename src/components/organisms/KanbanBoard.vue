@@ -21,15 +21,23 @@
           @end="updateRankAndCategory"
           @change="updateRankAndCategory"
         >
-          <li
+          <KanbanCard
+            v-for="(item, index) in sortedCardItems"
+            :key="index"
+            :item="item"
+            @removed="remove"
+            @some-event="callback"
+          ></KanbanCard>
+          <!-- <li
             class="w-full bg-white rounded py-2 px-1 my-3"
             v-for="(item, index) in sortedCardItems"
             :key="index"
           >
             <p class="text-gray-800">{{ item.text }}</p>
-            <XMarkIcon class="fill-red-500 w-8 h-8" @click="remove(item.id)"
-            />
-          </li>
+            <input type="text" />
+            <XMarkIcon class="fill-red-500 w-4 h-4" @click="remove(item.id)" />
+            <PencilIcon class="fill-blue-500 w-4 h-4" @click="edit(item.id)" />
+          </li> -->
         </VueDraggableNext>
 
         <li v-show="show">
@@ -57,7 +65,8 @@ import { VueDraggableNext } from "vue-draggable-next"
 import { useKanbanSortStore } from "../../stores/kanbansort"
 import { storeToRefs } from "pinia"
 import { api } from "../../assets/api"
-import { XMarkIcon } from "@heroicons/vue/24/solid"
+import { PencilIcon, XMarkIcon } from "@heroicons/vue/24/solid"
+import KanbanCard from "../molecules/KanbanCard.vue"
 
 const store = useKanbanSortStore()
 
@@ -121,7 +130,6 @@ function addNew() {
       .catch((err) => alert("Something went wrong"))
 }
 
-
 function updateRankAndCategory(e) {
   let updatedCardItems = listItems.value.map((item, index) => {
     item.rank = index
@@ -141,5 +149,26 @@ function updateRankAndCategory(e) {
     .catch((err) => console.log(err))
 
   // console.log("after updating", listItems.value[0])
+}
+//remove card function
+function remove(id) {
+  alert("Deleted")
+  listItems.value = listItems.value.filter((item) => item.id != id)
+
+  // api()
+  //   .post("/delete_card", { card_id: id })
+  //   .then((res) => {
+  //     listItems.value = listItems.value.filter((item) => item.id != id)
+  //   })
+}
+
+//edit card function
+
+function edit(id) {
+  api()
+    .post("/edit_card", { card_id: id })
+    .then((res) => {
+      // function here
+    })
 }
 </script>
